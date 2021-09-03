@@ -1,12 +1,12 @@
-import express from 'express'
+import express from 'express';
 
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
 
 app.get('/', (req, res) => {
-    res.send('hello')
-})
+  res.send('hello');
+});
 
 app.listen(port, () => {
-    console.log('App is running on port: ' + port)
-})
+  console.log(`App rodando na porta: ${port}`);
+});
