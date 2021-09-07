@@ -1,9 +1,12 @@
-import { Pool } from 'pg'
-require("dotenv").config();
+import { Pool } from 'pg';
 
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env
+require('dotenv').config();
 
-const connectionString = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
-const pool = new Pool({ connectionString })
+const {
+  DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME,
+} = process.env;
 
-export { pool }
+const connectionString = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+const pool = new Pool({ connectionString });
+
+export { pool };

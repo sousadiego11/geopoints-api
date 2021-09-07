@@ -1,8 +1,8 @@
-import { getOrders } from "../middlewares";
-import express from 'express'
+import express from 'express';
+import { getOrders } from '../middlewares';
 
-export const router = express.Router()
+export const router = express.Router();
 
 router.get('/orders', getOrders, (req, res) => {
-    res.status(200);
+  res.status(200);
 });
