@@ -1,8 +1,9 @@
 import express from 'express';
-import { getOrders } from '../middlewares';
+import { getOrdersService } from '../service';
 
 export const router = express.Router();
 
-router.get('/orders', getOrders, (req, res) => {
-  res.status(200);
+router.get('/orders', async (req, res) => {
+  const orders = await getOrdersService();
+  res.send(orders);
 });
