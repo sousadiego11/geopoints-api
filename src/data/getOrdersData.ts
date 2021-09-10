@@ -1,11 +1,9 @@
-import { pool } from '../database';
+import { db } from '../database';
 
 export const getOrdersData = async (): Promise<any[]> => {
-  const client = await pool.connect();
-
   try {
-    const orders = await client.query('select * from orders limit 10');
-    return orders.rows;
+    const orders = await db.query('select * from orders limit 10');
+    return orders;
   } catch (e: any) {
     throw new Error(e);
   }
