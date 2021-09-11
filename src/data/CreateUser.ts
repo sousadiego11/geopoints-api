@@ -19,11 +19,11 @@ export class CreateUser implements ICreateUser {
     this.encriptedPassword = null;
   }
 
-  async userExists(): Promise<boolean> {
+  private async userExists(): Promise<boolean> {
     return db.oneOrNone('SELECT * FROM users WHERE email = $1', [this.email]);
   }
 
-  async hashPassword(): Promise<void> {
+  private async hashPassword(): Promise<void> {
     const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(this.password, salt);
 
