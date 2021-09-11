@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
 import { db } from '../database';
 import { UserModel } from '../service/entities';
+import { ICreateUser } from './ICreateUser';
 
-export class CreateUser {
+export class CreateUser implements ICreateUser {
   name: string;
 
   email: string;
