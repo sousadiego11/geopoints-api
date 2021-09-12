@@ -1,12 +1,12 @@
-import bodyParser from 'body-parser';
 import express from 'express';
 import { createUserService } from '../service';
 
-export const router = express.Router();
+const router = express.Router();
 
-const jsonParser = bodyParser.json();
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
 
-router.post('/users', jsonParser, async (req, res) => {
+router.post('/users', async (req, res) => {
   try {
     const { name, email, password } = req.body;
     await createUserService({ name, email, password });
@@ -15,3 +15,5 @@ router.post('/users', jsonParser, async (req, res) => {
     res.status(400).send({ error: error.message });
   }
 });
+
+export { router };
