@@ -1,4 +1,4 @@
-import { UserModel } from '../service/entities';
+import { UserModel } from '../entities';
 
 export interface ICreateUser {
   createUser(): Promise<UserModel>;

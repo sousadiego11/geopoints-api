@@ -1,4 +1,4 @@
-import { UserModel } from '../service/entities';
+import { UserModel } from './entities';
 import { CreateUser } from './CreateUser';
 
 export const createUserData = async (user: UserModel): Promise<UserModel> => {

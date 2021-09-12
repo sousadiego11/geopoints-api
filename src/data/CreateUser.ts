@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { db } from '../database';
-import { UserModel } from '../service/entities';
-import { ICreateUser } from './ICreateUser';
+import { UserModel } from './entities';
+import { ICreateUser } from './repositories';
 
 export class CreateUser implements ICreateUser {
   name: string;
