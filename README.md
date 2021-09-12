@@ -1,4 +1,4 @@
-# Typescript API
+# Typescript API (WIP)
 
 This API was built using Eslint and Typescript for a better code reading and safety.
 
