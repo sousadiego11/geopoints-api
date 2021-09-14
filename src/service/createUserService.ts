@@ -1,4 +1,5 @@
 import { createUserData } from '../data';
-import { UserModel } from '../data/entities';
+import { ICreateUser } from '../data/repositories';
 
-export const createUserService = (user: UserModel): Promise<UserModel> => createUserData(user);
+// eslint-disable-next-line max-len
+export const createUserService = (user: ICreateUser.Request): Promise<ICreateUser.Response> => createUserData(user);
