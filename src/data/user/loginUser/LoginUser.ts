@@ -17,16 +17,19 @@ export class LoginUser implements ILoginUser {
     const user = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [this.email]);
 
     if (user) {
-      return bcrypt.compare(this.password, user.password);
+      const isValidPassword = await bcrypt.compare(this.password, user.password);
+      return { isValidPassword, id: user.id };
     }
 
     throw new Error('Usuário não existe!');
   }
 
   async loginUser(): Promise<ILoginUser.Response> {
-    const isValidPassword = await this.validatePassword();
+    const { isValidPassword, id } = await this.validatePassword();
+
     if (isValidPassword) {
-      const token = await jwt.sign({ data: this.email }, process.env.ACCESS_TOKEN_SECRET);
+      const token = await jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET);
+      await db.none('UPDATE users SET token = $1 where users.id = $2', [token, id]);
       return { token };
     }
 
