@@ -28,7 +28,7 @@ export class LoginUser implements ILoginUser {
     const { isValidPassword, email } = await this.validatePassword();
 
     if (isValidPassword) {
-      const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET);
+      const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 });
       return { token };
     }
 

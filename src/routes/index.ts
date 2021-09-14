@@ -1,5 +1,5 @@
 import express from 'express';
-import { validateUserToken } from '../middlewares';
+import { authentication } from '../middlewares';
 import { createUserService, loginUserService } from '../service';
 
 const router = express.Router();
@@ -27,7 +27,7 @@ router.post('/users/login', async (req: any, res: any) => {
   }
 });
 
-router.get('/users/points', validateUserToken, async (req, res) => {
+router.get('/users/points', authentication, async (req, res) => {
   res.status(200).send({ message: 'authenticated' });
 });
 

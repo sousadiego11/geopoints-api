@@ -1,1 +1,1 @@
-export * from './validateUserToken';
+export * from './authentication';
