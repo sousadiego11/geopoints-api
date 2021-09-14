@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
-import { db } from '../database';
-import { UserModel } from './entities';
-import { ICreateUser } from './repositories';
+import { db } from '../../../database';
+import { ICreateUser } from './repositories/ICreateUser';
 
 export class CreateUser implements ICreateUser {
   name: string;
@@ -12,7 +11,7 @@ export class CreateUser implements ICreateUser {
 
   encriptedPassword: string;
 
-  constructor(user: UserModel) {
+  constructor(user: ICreateUser.Request) {
     this.name = user.name;
     this.email = user.email;
     this.password = user.password;
@@ -30,7 +29,7 @@ export class CreateUser implements ICreateUser {
     this.encriptedPassword = hashed;
   }
 
-  async createUser(): Promise<UserModel> {
+  async createUser(): Promise<ICreateUser.Response> {
     const existUser = await this.userExists();
     await this.hashPassword();
     if (!existUser) {

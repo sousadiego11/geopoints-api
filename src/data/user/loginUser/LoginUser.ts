@@ -1,6 +1,6 @@
 // import bcrypt from 'bcrypt';
 import bcrypt from 'bcrypt';
-import { db } from '../database';
+import { db } from '../../../database';
 import { ILoginUser } from './repositories/ILoginUser';
 
 export class LoginUser implements ILoginUser {
