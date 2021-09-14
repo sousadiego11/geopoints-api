@@ -1,8 +1,9 @@
 /* eslint-disable no-redeclare */
-import { UserModel } from '../entities';
+
+import { UserModel } from '../../../entities';
 
 export interface ICreateUser {
-  createUser(): Promise<UserModel>;
+  createUser(): Promise<ICreateUser.Response>;
 }
 
 export namespace ICreateUser {
