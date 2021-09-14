@@ -8,4 +8,7 @@ export namespace ILoginUser {
     email: string
     password: string
   }
+  export type Response = {
+    token: string
+  }
 }

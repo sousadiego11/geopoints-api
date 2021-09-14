@@ -1,5 +1,5 @@
-// import bcrypt from 'bcrypt';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { db } from '../../../database';
 import { ILoginUser } from './repositories/ILoginUser';
 
@@ -23,10 +23,11 @@ export class LoginUser implements ILoginUser {
     throw new Error('Usuário não existe!');
   }
 
-  async loginUser(): Promise<any> {
+  async loginUser(): Promise<ILoginUser.Response> {
     const isValidPassword = await this.validatePassword();
     if (isValidPassword) {
-      return 'Logado com sucesso';
+      const token = await jwt.sign({ data: this.email }, process.env.ACCESS_TOKEN_SECRET);
+      return { token };
     }
 
     throw new Error('Senha inválida!');

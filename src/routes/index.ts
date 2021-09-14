@@ -22,8 +22,8 @@ router.post('/users/login', async (req: any, res: any) => {
   const { email, password } = req.body;
 
   try {
-    const isValidPassword = await loginUserService({ email, password });
-    res.status(200).send({ mensagem: isValidPassword });
+    const token = await loginUserService({ email, password });
+    res.status(200).send(token);
   } catch (error) {
     res.status(401).send({ error: error.message });
   }
