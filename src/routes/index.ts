@@ -1,7 +1,6 @@
 import express from 'express';
-// import { ILoginUser } from '../data/repositories/ILoginUser';
-import { createUserService } from '../service';
-import { loginUserService } from '../service/loginUserService';
+import { validateUserToken } from '../middlewares';
+import { createUserService, loginUserService } from '../service';
 
 const router = express.Router();
 
@@ -20,13 +19,16 @@ router.post('/users', async (req, res) => {
 
 router.post('/users/login', async (req: any, res: any) => {
   const { email, password } = req.body;
-
   try {
     const token = await loginUserService({ email, password });
     res.status(200).send(token);
   } catch (error) {
     res.status(401).send({ error: error.message });
   }
+});
+
+router.get('/users/points', validateUserToken, async (req, res) => {
+  res.status(200).send({ message: 'authenticated' });
 });
 
 export { router };
