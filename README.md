@@ -25,8 +25,8 @@ Typescript
 JWT
 Bcrypt
 Eslint
-pg-promise
-Design patterns
+PgPromise
+Design-patterns
 ```
 
 ## Contributing
