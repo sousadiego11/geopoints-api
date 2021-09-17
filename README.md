@@ -26,7 +26,7 @@ JWT
 Bcrypt
 Eslint
 PgPromise
-Design-patterns
+DesignPatterns
 ```
 
 ## Contributing
