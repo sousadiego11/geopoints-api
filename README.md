@@ -17,6 +17,18 @@ yarn start
 yarn dev
 ```
 
+## Tools used in this project 🍏
+
+```javascript
+Express
+Typescript
+JWT
+Bcrypt
+Eslint
+pg-promise
+Design patterns
+```
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
