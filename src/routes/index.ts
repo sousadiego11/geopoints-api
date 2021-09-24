@@ -29,7 +29,8 @@ router.post('/users/login', async (req: any, res: any) => {
   }
 });
 
-router.post('/users/auth', authentication, async (req, res) => {
+router.post('/users/auth', authentication, async (req: any, res: any) => {
+  console.log(req.email);
   res.status(200).send({ message: 'authenticated' });
 });
 
