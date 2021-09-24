@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { authentication } from '../middlewares';
 import { createUserService, loginUserService } from '../service';
 
@@ -6,6 +7,7 @@ const router = express.Router();
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
+router.use(cors());
 
 router.post('/users', async (req, res) => {
   try {
@@ -27,7 +29,7 @@ router.post('/users/login', async (req: any, res: any) => {
   }
 });
 
-router.get('/users/points', authentication, async (req, res) => {
+router.post('/users/auth', authentication, async (req, res) => {
   res.status(200).send({ message: 'authenticated' });
 });
 

@@ -29,7 +29,15 @@ export class CreateUser implements ICreateUser {
     this.encriptedPassword = hashed;
   }
 
+  private async validateFields(): Promise<boolean> {
+    return this.name === null || this.email === null || this.password === null;
+  }
+
   async createUser(): Promise<ICreateUser.Response> {
+    const invalidFields = await this.validateFields();
+    if (invalidFields) {
+      throw new Error('Please provide all fields!');
+    }
     const existUser = await this.userExists();
     await this.hashPassword();
     if (!existUser) {
