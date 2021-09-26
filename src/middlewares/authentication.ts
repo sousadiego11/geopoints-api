@@ -7,7 +7,8 @@ export const authentication = async (req, res, next): Promise<void> => {
     if (err) {
       res.status(401).send({ error: 'Please authenticate.' });
     } else {
-      req.email = decoded.email;
+      const { iat, exp, ...rest } = decoded;
+      req.user = rest;
       next();
     }
   });

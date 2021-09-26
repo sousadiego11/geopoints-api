@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import validator from 'validator';
 import { db } from '../../../database';
 import { ICreateUser } from './repositories/ICreateUser';
 
@@ -29,15 +30,27 @@ export class CreateUser implements ICreateUser {
     this.encriptedPassword = hashed;
   }
 
-  private async validateFields(): Promise<boolean> {
-    return this.name === null || this.email === null || this.password === null;
+  private async validateFields(): Promise<void> {
+    const passwordConfig = {
+      minLength: 6,
+      minSymbols: 0,
+      minNumbers: 0,
+      minUppercase: 0,
+    };
+
+    if (this.name === null || this.email === null || this.password === null) {
+      throw new Error('Please provide all fields!');
+    }
+    if (!validator.isStrongPassword(this.password, passwordConfig)) {
+      throw new Error('Password too weak!');
+    }
+    if (!validator.isEmail(this.email)) {
+      throw new Error('Provide a valid email address!');
+    }
   }
 
   async createUser(): Promise<ICreateUser.Response> {
-    const invalidFields = await this.validateFields();
-    if (invalidFields) {
-      throw new Error('Please provide all fields!');
-    }
+    await this.validateFields();
     const existUser = await this.userExists();
     await this.hashPassword();
     if (!existUser) {

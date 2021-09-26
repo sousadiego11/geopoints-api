@@ -18,17 +18,24 @@ export class LoginUser implements ILoginUser {
 
     if (user) {
       const isValidPassword = await bcrypt.compare(this.password, user.password);
-      return { isValidPassword, email: user.email };
+      return {
+        isValidPassword, email: user.email, id: user.id,
+      };
     }
 
     throw new Error('Usuário não existe!');
   }
 
   async loginUser(): Promise<ILoginUser.Response> {
-    const { isValidPassword, email } = await this.validatePassword();
+    const {
+      isValidPassword, email, id,
+    } = await this.validatePassword();
 
     if (isValidPassword) {
-      const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 });
+      const token = jwt.sign({
+        email,
+        id,
+      }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 });
       return { token };
     }
 
