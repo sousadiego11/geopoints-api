@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { authentication } from '../middlewares';
 import { createUserService, loginUserService } from '../service';
+import { createMarkerService } from '../service/createMarkerService';
 
 const router = express.Router();
 
@@ -31,6 +32,15 @@ router.post('/users/login', async (req: any, res: any) => {
 
 router.post('/users/auth', authentication, async (req: any, res: any) => {
   res.status(200).send(req.user);
+});
+
+router.post('/markers', authentication, async (req: any, res: any) => {
+  try {
+    const marker = await createMarkerService(req.body.marker);
+    res.status(201).send(marker);
+  } catch (error) {
+    res.status(401).send({ error: error.message });
+  }
 });
 
 export { router };
