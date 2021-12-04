@@ -36,7 +36,7 @@ export class LoginUser implements ILoginUser {
         email,
         id,
       }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 60 * 60 });
-      return { token };
+      return { token, id };
     }
 
     throw new Error('Senha inválida!');

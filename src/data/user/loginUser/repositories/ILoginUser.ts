@@ -10,5 +10,6 @@ export namespace ILoginUser {
   }
   export type Response = {
     token: string
+    id: number
   }
 }

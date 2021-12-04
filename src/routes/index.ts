@@ -3,6 +3,7 @@ import cors from 'cors';
 import { authentication } from '../middlewares';
 import { createUserService, loginUserService } from '../service';
 import { createMarkerService } from '../service/createMarkerService';
+import { getMarkersService } from '../service/getMarkersService';
 
 const router = express.Router();
 
@@ -38,6 +39,15 @@ router.post('/markers', authentication, async (req: any, res: any) => {
   try {
     const marker = await createMarkerService({ ...req.body.marker, idUser: req.user.id });
     res.status(201).send(marker);
+  } catch (error) {
+    res.status(401).send({ error: error.message });
+  }
+});
+
+router.get('/markers', async (_req: any, res: any) => {
+  try {
+    const markers = await getMarkersService();
+    res.status(201).send(markers);
   } catch (error) {
     res.status(401).send({ error: error.message });
   }
