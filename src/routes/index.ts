@@ -6,7 +6,6 @@ import { createMarkerService } from '../service/createMarkerService';
 import { getMarkersService } from '../service/getMarkersService';
 
 const router = express.Router();
-
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 router.use(cors());
