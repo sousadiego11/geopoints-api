@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import { authentication } from '../middlewares';
-import { createUserService, loginUserService } from '../service';
-import { createMarkerService } from '../service/createMarkerService';
-import { getMarkersService } from '../service/getMarkersService';
+import {
+  createUserService, loginUserService, createMarkerService, getMarkersService,
+} from '../service';
 
 const router = express.Router();
 router.use(express.json());
