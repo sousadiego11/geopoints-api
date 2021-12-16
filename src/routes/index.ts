@@ -2,13 +2,35 @@ import express from 'express';
 import cors from 'cors';
 import { authentication } from '../middlewares';
 import {
-  createUserService, loginUserService, createMarkerService, getMarkersService,
+  createUserService,
+  loginUserService,
+  createMarkerService,
+  getMarkersService,
 } from '../service';
 
 const router = express.Router();
+
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 router.use(cors());
+
+router.get('/markers', async (_req: any, res: any) => {
+  try {
+    const markers = await getMarkersService();
+    res.status(201).send(markers);
+  } catch (error) {
+    res.status(401).send({ error: error.message });
+  }
+});
+
+router.post('/markers', authentication, async (req: any, res: any) => {
+  try {
+    const marker = await createMarkerService({ ...req.body.marker, idUser: req.user.id });
+    res.status(201).send(marker);
+  } catch (error) {
+    res.status(401).send({ error: error.message });
+  }
+});
 
 router.post('/users', async (req, res) => {
   try {
@@ -32,24 +54,6 @@ router.post('/users/login', async (req: any, res: any) => {
 
 router.post('/users/auth', authentication, async (req: any, res: any) => {
   res.status(200).send(req.user);
-});
-
-router.post('/markers', authentication, async (req: any, res: any) => {
-  try {
-    const marker = await createMarkerService({ ...req.body.marker, idUser: req.user.id });
-    res.status(201).send(marker);
-  } catch (error) {
-    res.status(401).send({ error: error.message });
-  }
-});
-
-router.get('/markers', async (_req: any, res: any) => {
-  try {
-    const markers = await getMarkersService();
-    res.status(201).send(markers);
-  } catch (error) {
-    res.status(401).send({ error: error.message });
-  }
 });
 
 export { router };

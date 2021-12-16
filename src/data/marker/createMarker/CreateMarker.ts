@@ -1,7 +1,8 @@
 import { db } from '../../../database';
 import { MarkerModel } from '../../entities';
+import { ICreateMarker } from './repositories/ICreateMarker';
 
-export class CreateMarker {
+export class CreateMarker implements ICreateMarker {
   idUser: number;
 
   description: string;

@@ -3,6 +3,13 @@ import validator from 'validator';
 import { db } from '../../../database';
 import { ICreateUser } from './repositories/ICreateUser';
 
+const passwordConfig = {
+  minLength: 6,
+  minSymbols: 0,
+  minNumbers: 0,
+  minUppercase: 0,
+};
+
 export class CreateUser implements ICreateUser {
   name: string;
 
@@ -31,21 +38,14 @@ export class CreateUser implements ICreateUser {
   }
 
   private async validateFields(): Promise<void> {
-    const passwordConfig = {
-      minLength: 6,
-      minSymbols: 0,
-      minNumbers: 0,
-      minUppercase: 0,
-    };
-
     if (this.name === null || this.email === null || this.password === null) {
-      throw new Error('Please provide all fields!');
+      throw new Error('Por favor, preencha todos os campos!');
     }
     if (!validator.isStrongPassword(this.password, passwordConfig)) {
-      throw new Error('Password too weak!');
+      throw new Error('Senha muito fraca!');
     }
     if (!validator.isEmail(this.email)) {
-      throw new Error('Provide a valid email address!');
+      throw new Error('Insira um e-mail válido!');
     }
   }
 
@@ -57,6 +57,6 @@ export class CreateUser implements ICreateUser {
       return db.none('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [this.name, this.email, this.encriptedPassword]);
     }
 
-    throw new Error('Email already being used!');
+    throw new Error('E-mail já em uso!');
   }
 }
