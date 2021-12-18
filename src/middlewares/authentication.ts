@@ -6,7 +6,7 @@ export const authentication = async (req, res, next: NextFunction): Promise<void
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: Error, decoded) => {
     if (err) {
-      res.status(401).send({ error: 'Please authenticate.' });
+      res.status(401).send({ error: 'Você não está autenticado!' });
     } else {
       const { iat, exp, ...rest } = decoded;
       req.user = rest;
