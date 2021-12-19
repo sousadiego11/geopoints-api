@@ -13,7 +13,7 @@ export class LoginUser implements ILoginUser {
     this.email = user.email;
   }
 
-  private async validatePassword(): Promise<any> {
+  async validatePassword(): Promise<any> {
     const user = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [this.email]);
 
     if (user) {

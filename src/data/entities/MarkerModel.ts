@@ -1,5 +1,5 @@
 export type MarkerModel = {
-  id: number
+  id?: number
   idUser: number
   description: string
   latitude: string

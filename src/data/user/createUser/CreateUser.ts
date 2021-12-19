@@ -26,18 +26,18 @@ export class CreateUser implements ICreateUser {
     this.encriptedPassword = null;
   }
 
-  private async userExists(): Promise<boolean> {
+  async userExists(): Promise<ICreateUser.Response> {
     return db.oneOrNone('SELECT * FROM users WHERE email = $1', [this.email]);
   }
 
-  private async hashPassword(): Promise<void> {
+  async hashPassword(): Promise<void> {
     const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(this.password, salt);
 
     this.encriptedPassword = hashed;
   }
 
-  private async validateFields(): Promise<void> {
+  async validateFields(): Promise<void> {
     if (this.name === null || this.email === null || this.password === null) {
       throw new Error('Por favor, preencha todos os campos!');
     }

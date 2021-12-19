@@ -18,7 +18,7 @@ export class CreateMarker implements ICreateMarker {
     this.longitude = marker.longitude;
   }
 
-  private async validateData() {
+  async validateData() {
     if (!this.idUser) throw new Error('Um ponto precisa ser salvo para um usuário!');
     if (!this.latitude || !this.longitude) throw new Error('Um ponto requer localização válida!');
     if (this.description?.trim() === '' || !this.description) throw new Error('Um ponto requer descrição!');
