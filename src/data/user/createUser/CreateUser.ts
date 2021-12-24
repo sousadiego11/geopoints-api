@@ -1,6 +1,6 @@
-import bcrypt from 'bcrypt';
 import validator from 'validator';
 import { db } from '../../../database';
+import { IEncrypter } from '../../encrypter/repositories';
 import { ICreateUser } from './repositories/ICreateUser';
 
 const passwordConfig = {
@@ -17,24 +17,15 @@ export class CreateUser implements ICreateUser {
 
   password: string;
 
-  encriptedPassword: string;
-
-  constructor(user: ICreateUser.Request) {
+  constructor(user: ICreateUser.Request, private readonly encrypter: IEncrypter) {
     this.name = user.name;
     this.email = user.email;
     this.password = user.password;
-    this.encriptedPassword = null;
+    this.encrypter = encrypter;
   }
 
   async userExists(): Promise<ICreateUser.Response> {
     return db.oneOrNone('SELECT * FROM users WHERE email = $1', [this.email]);
-  }
-
-  async hashPassword(): Promise<void> {
-    const salt = await bcrypt.genSalt(10);
-    const hashed = await bcrypt.hash(this.password, salt);
-
-    this.encriptedPassword = hashed;
   }
 
   async validateFields(): Promise<void> {
@@ -49,12 +40,12 @@ export class CreateUser implements ICreateUser {
     }
   }
 
-  async createUser(): Promise<ICreateUser.Response> {
+  async create(): Promise<ICreateUser.Response> {
     await this.validateFields();
     const existUser = await this.userExists();
-    await this.hashPassword();
+    const hashedPassword = await this.encrypter.hashPassword();
     if (!existUser) {
-      return db.none('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [this.name, this.email, this.encriptedPassword]);
+      return db.none('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [this.name, this.email, hashedPassword]);
     }
 
     throw new Error('E-mail já em uso!');
