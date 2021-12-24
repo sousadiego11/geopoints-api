@@ -17,19 +17,19 @@ export class CreateUser implements ICreateUser {
 
   password: string;
 
-  constructor(user: ICreateUser.Request, private readonly encrypter: IEncrypter) {
+  constructor(user: ICreateUser.Request, readonly encrypter: IEncrypter) {
     this.name = user.name;
     this.email = user.email;
     this.password = user.password;
     this.encrypter = encrypter;
   }
 
-  async userExists(): Promise<ICreateUser.Response> {
+  async userExists(): Promise<ICreateUser.Response> | null {
     return db.oneOrNone('SELECT * FROM users WHERE email = $1', [this.email]);
   }
 
   async validateFields(): Promise<void> {
-    if (this.name === null || this.email === null || this.password === null) {
+    if (!this.name || !this.email || !this.password) {
       throw new Error('Por favor, preencha todos os campos!');
     }
     if (!validator.isStrongPassword(this.password, passwordConfig)) {
