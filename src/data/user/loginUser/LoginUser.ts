@@ -1,6 +1,7 @@
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { db } from '../../../database';
+import { IEncrypter } from '../../encrypter/repositories';
+import { UserModel } from '../../entities';
 import { ILoginUser } from './repositories/ILoginUser';
 
 export class LoginUser implements ILoginUser {
@@ -8,28 +9,34 @@ export class LoginUser implements ILoginUser {
 
   email: string
 
-  constructor(user: ILoginUser.Request) {
+  constructor(
+    user: ILoginUser.Request,
+    readonly encrypter: IEncrypter,
+  ) {
     this.password = user.password;
     this.email = user.email;
+    this.encrypter = encrypter;
   }
 
-  async validatePassword(): Promise<any> {
+  async fetchUser(): Promise<UserModel> {
     const user = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [this.email]);
+    return {
+      email: user?.email,
+      password: user?.password,
+      id: user?.id,
+      name: user?.name,
+    };
+  }
 
-    if (user) {
-      const isValidPassword = await bcrypt.compare(this.password, user.password);
-      return {
-        isValidPassword, email: user.email, id: user.id,
-      };
-    }
-
-    throw new Error('Usuário não existe!');
+  validate(id: number): void {
+    if (!this.email) throw new Error('Insira um email!');
+    if (!id) throw new Error('Usuário não existe!');
   }
 
   async loginUser(): Promise<ILoginUser.Response> {
-    const {
-      isValidPassword, email, id,
-    } = await this.validatePassword();
+    const { email, password, id } = await this.fetchUser();
+    this.validate(id);
+    const isValidPassword = await this.encrypter.validatePassword(password);
 
     if (isValidPassword) {
       const token = jwt.sign({
